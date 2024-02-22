@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  gym-pass-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: dockerUser
+      POSTGRES_PASSWORD: dockerUser
+      POSTGRES_DB: gympassapp
