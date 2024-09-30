@@ -23,16 +23,10 @@ jobs:
       - name: Run tests
         run: npm run test  
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-report
-          path: coverage/lcov.info  
-
   build:
     name: Build Application
     runs-on: ubuntu-latest
-    needs: run-tests  
+    needs: [run-tests]  
 
     steps:
       - name: Checkout code
@@ -59,11 +53,14 @@ jobs:
   notification:
     name: Send Notification
     runs-on: ubuntu-latest
-    needs: run-tests  
+    needs: build
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+
+      - name: Install mailutils
+        run: sudo apt-get install -y mailutils  # Instala o mailutils
 
       - name: Make script executable
         run: chmod +x scripts/shell.sh
@@ -71,8 +68,4 @@ jobs:
       - name: Execute external scripts
         run: sh scripts/shell.sh
         env:
-          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
-
-      - name: Send Pipeline Notification
-        run: |
-          echo "Pipeline executado!" | mail -s "CI Pipeline Notification" ${{ secrets.NOTIFICATION_EMAIL }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}  # Use a variável de ambiente para o e-mail
