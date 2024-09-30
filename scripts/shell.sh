@@ -1,8 +1,4 @@
 #!/bin/bash
 
-# Instalar mailutils se não estiver instalado
-sudo apt-get update
-sudo apt-get install -y mailutils
-
-# Usar a variável de ambiente para enviar e-mail
-echo "Mandando e-mail com o mailutils do linux" | mail -s "um email" "$NOTIFICATION_EMAIL"
+echo "Mandando e-mail de teste para $NOTIFICATION_EMAIL"
+echo "Este é um e-mail de teste" | mail -s "Teste de e-mail" $NOTIFICATION_EMAIL
