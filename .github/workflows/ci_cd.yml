@@ -60,12 +60,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install mailutils
-        run: sudo apt-get install -y mailutils  # Instala o mailutils
-
+        run: sudo apt-get update && sudo apt-get install -y mailutils  
+        
       - name: Make script executable
         run: chmod +x scripts/shell.sh
 
-      - name: Execute external scripts
+      - name: Execute external script to send email
         run: sh scripts/shell.sh
         env:
-          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}  # Use a variável de ambiente para o e-mail
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}  
