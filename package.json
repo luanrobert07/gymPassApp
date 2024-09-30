@@ -43,6 +43,7 @@
     "dayjs": "1.11.10",
     "dotenv": "16.4.0",
     "fastify": "4.25.2",
+    "gympassapp": "file:",
     "supertest": "6.3.4",
     "zod": "3.22.4"
   }

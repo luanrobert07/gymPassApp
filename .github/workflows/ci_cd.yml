@@ -1,0 +1,79 @@
+name: CI Pipeline
+
+on: [push]
+
+jobs:
+  run-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage  # Gera o relatório de cobertura
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/lcov.info  # Caminho para o relatório de cobertura
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: run-tests  # Espera os testes serem executados
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the application
+        run: npm run build -- out-dir=build  # Ajuste conforme necessário
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: build/  # Caminho do diretório de build
+
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [run-tests, build]  # Espera os jobs anteriores
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Send email notification
+        run: |
+          echo "Pipeline executed!" | mail -s "CI Pipeline Notification" ${{ secrets.NOTIFICATION_EMAIL }}
