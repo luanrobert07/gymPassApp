@@ -10,5 +10,6 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],  // Gera relatórios de cobertura em vários formatos
     },
+    exclude: ['prisma/**'],
   },
 });
