@@ -20,14 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests and generate report
-        run: npm run test -- --reporter junit --report-dir test-results  
+      - name: Run tests
+        run: npm run test  
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: test-results/ 
 
   build:
     name: Build Application
@@ -48,13 +43,13 @@ jobs:
         run: npm ci
 
       - name: Build the application
-        run: npm run build -- --out-dir=build  
+        run: npm run build -- out-dir=build  
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: build/
+          path: build/  
 
   notification:
     name: Send Notification
@@ -74,4 +69,4 @@ jobs:
       - name: Execute external script to send email
         run: sh scripts/shell.sh
         env:
-          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+          NOTIFICATION_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}  
