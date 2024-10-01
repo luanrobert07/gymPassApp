@@ -23,7 +23,6 @@ jobs:
       - name: Run tests
         run: npm run test  
 
-
   build:
     name: Build Application
     runs-on: ubuntu-latest
