@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npx vitest run
+        run: npm run test
 
       - name: Upload Test Report Artifact
         uses: actions/upload-artifact@v3
